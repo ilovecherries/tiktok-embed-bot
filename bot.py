@@ -21,16 +21,17 @@ class Bot(commands.Bot):
 	async def on_message(self, msg: Message):
 		if self.user.id != msg.author.id:
 			m = re.search(TIKTOK_REGEX, msg.content)
+			reply = await msg.reply("Hold on, getting information from TikTok API")
 			if bool(m):
 				url = m.group(0)
 				with TikTokApi() as api:
 					try:
 						video = api.video(url=url)
 						direct = video.info()["video"]["playAddr"]
-						await msg.reply(direct)
+						await reply.edit(direct)
 					except Exception as e:
 						print(e)
-						await msg.reply("A TikTok with this URL doesn't exist")
+						await reply.edit("A TikTok with this URL doesn't exist")
 
 bot = Bot(command_prefix='$', intents=intents)
 
