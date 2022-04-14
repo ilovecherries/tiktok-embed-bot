@@ -12,7 +12,7 @@ config = dotenv_values(".env")
 intents = nextcord.Intents.default()
 intents.messages = True
 
-TIKTOK_REGEX = r'^https?:\/\/vm\.tiktok\.com\/(\w+)\/?'
+TIKTOK_REGEX = r'https?:\/\/vm\.tiktok\.com\/(\w+)\/?'
 
 class Bot(commands.Bot):
 	def __init__(self, *args, **kwargs):
@@ -21,8 +21,8 @@ class Bot(commands.Bot):
 	async def on_message(self, msg: Message):
 		if self.user.id != msg.author.id:
 			m = re.search(TIKTOK_REGEX, msg.content)
-			reply = await msg.reply("Hold on, getting information from TikTok API")
-			if bool(m):
+			if m is not None:
+				reply = await msg.reply("Hold on, getting information from TikTok API")
 				url = m.group(0)
 				with TikTokApi() as api:
 					try:
