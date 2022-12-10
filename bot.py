@@ -10,7 +10,7 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 
 intents = nextcord.Intents.default()
-intents.messages = True
+intents.message_content = True
 
 TIKTOK_REGEX = r'https?:\/\/vm\.tiktok\.com\/(\w+)\/?'
 
